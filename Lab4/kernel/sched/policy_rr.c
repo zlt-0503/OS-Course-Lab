@@ -149,7 +149,8 @@ int __rr_sched_dequeue(struct thread *thread)
         /* LAB 4 TODO BEGIN (exercise 3) */
         /* Delete thread from the ready queue and upate the queue length */
         /* Note: you should add two lines of code. */
-
+        list_del(&thread->ready_queue_node);
+        rr_ready_queue_meta[thread->thread_ctx->cpuid].queue_len--;
         /* LAB 4 TODO END (exercise 3) */
         obj_put(thread);
         return 0;
@@ -268,7 +269,8 @@ int rr_sched(void)
                                 }
                         /* LAB 4 TODO BEGIN (exercise 4) */
                         /* Refill budget for current running thread (old) and enqueue the current thread.*/
-
+                        rr_sched_refill_budget(old, DEFAULT_BUDGET);
+                        BUG_ON(rr_sched_enqueue(old));
                         /* LAB 4 TODO END (exercise 4) */
 
                         } else if (!thread_is_ts_blocking(old)
