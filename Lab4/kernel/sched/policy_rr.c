@@ -289,7 +289,11 @@ int rr_sched_init(void)
 {
         /* LAB 4 TODO BEGIN (exercise 1) */
         /* Initial the ready queues (rr_ready_queue_meta) for each CPU core */
-
+	for (unsigned int cpuid = 0; cpuid < PLAT_CPU_NUM; ++cpuid) {
+		init_list_head(&rr_ready_queue_meta[cpuid].queue_head);
+		lock_init(&rr_ready_queue_meta[cpuid].queue_lock);
+		rr_ready_queue_meta[cpuid].queue_len = 0;
+	}
         /* LAB 4 TODO END (exercise 1) */
 
         lab4_test_scheduler_meta();
